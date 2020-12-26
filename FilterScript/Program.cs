@@ -6,7 +6,9 @@ namespace FilterScript
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            DriverTest test = new DriverTest();
+
+            test.Test();
         }
     }
 }
