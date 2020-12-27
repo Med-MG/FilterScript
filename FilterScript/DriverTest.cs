@@ -37,7 +37,7 @@ namespace FilterScript
             //Go button
             var GoButton = By.XPath("/html/body/div[4]/div[1]/div[1]/form/div/div[2]/div/div[2]/button");
             //Excel Download Button
-            var ExcelDownload = By.XPath("//*[@id='dt-grid1-buttons']/div/button[2]");
+            var ExcelDownload = By.XPath("//*[@id='dt-grid1-buttons']/div/button[2]/span");
             //Launch Email Hippo website
             driver.Navigate().GoToUrl("https://tools.verifyemailaddress.io/");
             //Wait Until the page is loaded
@@ -51,7 +51,7 @@ namespace FilterScript
              * At the end Download Excel file
              */
             string fpath = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\emails.txt";
-            string CheckedFile = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\Checkedemails.txt";
+            //string CheckedFile = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\Checkedemails.txt";
             if (File.Exists(fpath))
             {
                 //FileInfo fi = new FileInfo(fpath);
@@ -59,66 +59,46 @@ namespace FilterScript
 
                 List<string> AllEmails = File.ReadAllLines(fpath).ToList();
 
-                FileInfo fiChecked = new FileInfo(CheckedFile);
+                //Duplicate the list
+                List<string> OverRideList = new List<string>();
+                OverRideList.AddRange(AllEmails);
 
-                for(int i = 0; i < 11; i++)
+                //Create the checked emails file
+                //StreamWriter sw = File.AppendText(CheckedFile);
+                // A random, to randomise the process
+                Random rand = new Random(Guid.NewGuid().GetHashCode());
+                for (int i = 0; i < 3; i++)
                 {
                     //Check email for validity
                     driver.FindElement(EmailInput).SendKeys(AllEmails[i]);
+                    System.Threading.Thread.Sleep(rand.Next(1000, 5000));
                     driver.FindElement(GoButton).Click();
 
                     //Put it in an Already checked file
-                    using (StreamWriter sw = fiChecked.CreateText()) 
-                    {
-                        sw.WriteLine(AllEmails[i]);
-                    }
+                    //sw.WriteLine(AllEmails[i]);
 
-                    AllEmails.RemoveAt(AllEmails.IndexOf(AllEmails[i]));
+                    //remove the email form list
+                    OverRideList.Remove(AllEmails[i]);
 
                     
-                    //wait for page to load agin then 
+                    //wait for page to load again then 
                     WaitUntilElementVisible(EmailInput, driver, 30);
+
+                    
+                    System.Threading.Thread.Sleep(rand.Next(2000, 10000));
                 }
-
-
-                //Open the file to read text
-                //using (StreamReader sr = fi.OpenText()) 
-                //{
-                //    string txt;
-                //    //Read the data from file, until the end of file is reached
-
-                //    for (int i = 0; i < 100; i++)
-                //    {
-                //        //Take email
-                //        txt = sr.ReadLine();
-                //        //Check email for validity
-                //        driver.FindElement(EmailInput).SendKeys(txt);
-                //        //Put it in an Already checked file
-                //        using (StreamWriter sw = fiChecked.CreateText())
-                //        {
-                //            sw.WriteLine(txt);
-                //        }
-
-                //    }
-
-                //while((txt = sr.ReadLine()) != null)
-                //{
-                //    //Check email for validity
-                //    driver.FindElement(EmailInput).SendKeys(txt);
-
-                //    driver.FindElement(By.XPath("/html/body/div[4]/div[1]/div[1]/form/div/div[2]/div/div[2]/button")).Click();
-                //    //wait for page to load agin then 
-                //    WaitUntilElementVisible(EmailInput, driver, 30);
-                //}
 
 
                 WaitUntilElementVisible(ExcelDownload, driver, 30);
                 //Download Excel File 
-                driver.FindElement(ExcelDownload).Click();
+                System.Threading.Thread.Sleep(rand.Next(1000, 3000));
+                var ele = driver.FindElement(ExcelDownload);
+                IJavaScriptExecutor jse = (IJavaScriptExecutor)driver;
+                jse.ExecuteScript("arguments[0].click()", ele);
 
 
                 //Override the Old file with the new list
-                File.WriteAllLines(fpath, AllEmails.ToArray());
+                File.WriteAllLines(fpath, OverRideList.ToArray());
 
                 
             }
