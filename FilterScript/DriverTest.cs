@@ -12,6 +12,14 @@ namespace FilterScript
 {
     class DriverTest
     {
+        //Driver Init
+        IWebDriver driver = new ChromeDriver(@"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\ChromeDriver");
+        //Email Input Locator
+        By EmailInput = By.XPath("//*[@id='input-email-address']");
+        //Go button
+        By GoButton = By.XPath("/html/body/div[4]/div[1]/div[1]/form/div/div[2]/div/div[2]/button");
+        //Excel Download Button
+        By ExcelDownload = By.XPath("//*[@id='dt-grid1-buttons']/div/button[2]/span");
 
         [Test]
         public void Test()
@@ -28,16 +36,7 @@ namespace FilterScript
              * Close Page And Repeat Action.
              */
 
-            DateTime todayNow = DateTime.Now;
 
-            //Driver Init
-            IWebDriver driver = new ChromeDriver(@"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\ChromeDriver");
-            //Email Input Locator
-            var EmailInput = By.XPath("//*[@id='input-email-address']");
-            //Go button
-            var GoButton = By.XPath("/html/body/div[4]/div[1]/div[1]/form/div/div[2]/div/div[2]/button");
-            //Excel Download Button
-            var ExcelDownload = By.XPath("//*[@id='dt-grid1-buttons']/div/button[2]/span");
             //Launch Email Hippo website
             driver.Navigate().GoToUrl("https://tools.verifyemailaddress.io/");
             //Wait Until the page is loaded
@@ -91,7 +90,7 @@ namespace FilterScript
 
                 WaitUntilElementVisible(ExcelDownload, driver, 30);
                 //Download Excel File 
-                System.Threading.Thread.Sleep(rand.Next(1000, 3000));
+                System.Threading.Thread.Sleep(rand.Next(1000, 2000));
                 var ele = driver.FindElement(ExcelDownload);
                 IJavaScriptExecutor jse = (IJavaScriptExecutor)driver;
                 jse.ExecuteScript("arguments[0].click()", ele);
@@ -100,30 +99,40 @@ namespace FilterScript
                 //Override the Old file with the new list
                 File.WriteAllLines(fpath, OverRideList.ToArray());
 
+
+                //Call ChangeIpAdress Method
                 
             }
 
 
-            //this will search for the element until a timeout is reached
-            static IWebElement WaitUntilElementVisible(By EmailInput, IWebDriver  Driver, int timeout = 10)
-            {
-                try
-                {
-                    var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(timeout));
-                    return wait.Until(ExpectedConditions.ElementIsVisible(EmailInput));
-                }
-                catch (NoSuchElementException)
-                {
-                    Console.WriteLine("Element with locator: '" + EmailInput + "' was not found.");
-                    throw;
-                }
-            }
 
 
+
+           
 
             //driver.Close();
 
 
+
+        }
+
+        //this will search for the element until a timeout is reached
+        static IWebElement WaitUntilElementVisible(By EmailInput, IWebDriver Driver, int timeout = 10)
+        {
+            try
+            {
+                var wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(timeout));
+                return wait.Until(ExpectedConditions.ElementIsVisible(EmailInput));
+            }
+            catch (NoSuchElementException)
+            {
+                Console.WriteLine("Element with locator: '" + EmailInput + "' was not found.");
+                throw;
+            }
+        }
+
+        static void ChangeIpAddress()
+        {
 
         }
 
