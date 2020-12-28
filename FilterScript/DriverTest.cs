@@ -50,7 +50,7 @@ namespace FilterScript
 
 
             //check if access denied
-            while (driver.Title != "Attention Required! | Cloudflare")
+            while (driver.Title != "Email Address Verifier - Validate and Check In Real Time | verifyemailaddress.io")
             {
                 ChangeIpAddress(driver, true);
 
@@ -127,7 +127,7 @@ namespace FilterScript
                     waitAg.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
 
                     //check if access denied
-                    while (driver.Title != "Attention Required! | Cloudflare")
+                    while (driver.Title != "Email Address Verifier - Validate and Check In Real Time | verifyemailaddress.io")
                     {
                         ChangeIpAddress(driver, true);
 
