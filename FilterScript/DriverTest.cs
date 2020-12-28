@@ -24,7 +24,7 @@ namespace FilterScript
         //Iteration variable
         double NumIterations = 0;
 
-        [Test]
+       
         public void Test()
         {
 
@@ -62,7 +62,9 @@ namespace FilterScript
              * Check them out for validity
              * At the end Download Excel file
              */
-            string fpath = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\emails.txt";
+            var docPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            string fpath = $@"{docPath}/Filter/emails.txt";
+            //string fpath = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\emails.txt";
             //string CheckedFile = @"C:\Users\Administrateur\Downloads\Production\YoucodeC#\FilterScript\EmailLists\Checkedemails.txt";
             if (File.Exists(fpath))
             {
