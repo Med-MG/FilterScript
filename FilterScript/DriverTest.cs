@@ -23,7 +23,8 @@ namespace FilterScript
         By ExcelDownload = By.XPath("//*[@id='dt-grid1-buttons']/div/button[2]/span");
         //Iteration variable
         double NumIterations = 0;
-
+        //Range of a single iteration
+        int Range = 98;
        
         public void Test()
         {
@@ -72,7 +73,7 @@ namespace FilterScript
                 //Put All lines in a list
 
                 List<string> AllEmails = File.ReadAllLines(fpath).ToList();
-                double countPerhundred = AllEmails.Count / 99;
+                double countPerhundred = AllEmails.Count / Range;
                 NumIterations = Math.Floor(countPerhundred);
 
 
@@ -87,7 +88,7 @@ namespace FilterScript
 
                 while(NumIterations != 0)
                 {
-                    for (int i = 0; i < 99; i++)
+                    for (int i = 0; i < Range; i++)
                     {
                         //Check email for validity
                         driver.FindElement(EmailInput).SendKeys(AllEmails[i]);
@@ -123,7 +124,7 @@ namespace FilterScript
 
                     //Call ChangeIpAdress Method
                     ChangeIpAddress(driver);
-                    driver.Navigate().Refresh();
+                    driver.Navigate().GoToUrl("https://tools.verifyemailaddress.io/");
                     //Wait Until the page is loaded
                     IWait<IWebDriver> waitAg = new OpenQA.Selenium.Support.UI.WebDriverWait(driver, TimeSpan.FromSeconds(30.00));
                     waitAg.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
@@ -201,7 +202,7 @@ namespace FilterScript
                 driver.FindElement(Connection).Click();
                 System.Threading.Thread.Sleep(5000);
                 driver.SwitchTo().Window(verifyEmailTab);
-                driver.Navigate().Refresh();
+                driver.Navigate().GoToUrl("https://tools.verifyemailaddress.io/");
                 //Wait Until the page is loaded
                 IWait<IWebDriver> wait = new OpenQA.Selenium.Support.UI.WebDriverWait(driver, TimeSpan.FromSeconds(30.00));
                 wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
