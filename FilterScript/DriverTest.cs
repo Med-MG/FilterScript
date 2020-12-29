@@ -72,7 +72,7 @@ namespace FilterScript
                 //Put All lines in a list
 
                 List<string> AllEmails = File.ReadAllLines(fpath).ToList();
-                double countPerhundred = AllEmails.Count / 20;
+                double countPerhundred = AllEmails.Count / 99;
                 NumIterations = Math.Floor(countPerhundred);
 
 
@@ -87,7 +87,7 @@ namespace FilterScript
 
                 while(NumIterations != 0)
                 {
-                    for (int i = 0; i < 20; i++)
+                    for (int i = 0; i < 99; i++)
                     {
                         //Check email for validity
                         driver.FindElement(EmailInput).SendKeys(AllEmails[i]);
